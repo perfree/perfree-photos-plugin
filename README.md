@@ -1,0 +1,1 @@
+# perfree-photos-plugin
