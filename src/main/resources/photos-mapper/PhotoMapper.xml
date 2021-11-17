@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.photos.mapper.PhotoMapper" >
+
+    <update id="dropPhotoTable">
+        drop table if exists `p_photo`
+    </update>
+
+    <update id="createPhotoTableForSqlite">
+        CREATE TABLE `p_photo`  (
+                "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+                "photosId" integer,
+                `name` text(256),
+                `desc` text(1024),
+                "url" text(128),
+                `userId` integer,
+                "createTime" DATETIME,
+                `updateTime` DATETIME
+        )
+    </update>
+
+    <update id="createPhotoTableForMysql">
+        CREATE TABLE `p_photo`  (
+            `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+            `photosId` int(0) NOT NULL COMMENT '相册id',
+            `name` varchar(64) NULL COMMENT '名称',
+            `desc` varchar(64) NULL COMMENT '描述',
+            `url` varchar(64) NULL COMMENT 'url',
+            `userId` int(0) NOT NULL COMMENT '用户id',
+            `createTime` datetime NULL COMMENT '创建时间',
+            `updateTime` datetime NULL COMMENT '更新时间'
+            PRIMARY KEY (`id`)
+        )
+    </update>
+
+    <update id="update">
+        update p_photo set
+        `name` = #{name},`desc`=#{desc},url=#{url},updateTime=#{updateTime}
+        where id = #{id}
+    </update>
+
+    <delete id="delPhoto">
+        delete from p_photo where photosId = #{photosId}
+    </delete>
+
+    <delete id="del">
+        delete from p_photo where id = #{id}
+    </delete>
+
+    <select id="getList" resultType="com.photos.model.Photo">
+        select * from p_photo where photosId = #{photosId}
+        <if test="name != null and name != ''">
+            and `name` like '%'||#{name}||'%'
+        </if>
+        order by id desc limit ${page},${size}
+    </select>
+    <select id="getTotal" resultType="java.lang.Long">
+        select count(1) from p_photo where photosId = #{photosId}
+        <if test="name != null and name != ''">
+            and `name` like '%'||#{name}||'%'
+        </if>
+    </select>
+
+    <select id="getById" resultType="com.photos.model.Photo">
+        select * from p_photo where id = #{id}
+    </select>
+
+    <select id="getAllPhotoByPhotosId" resultType="com.photos.model.Photo">
+        select * from p_photo where photosId = #{photosId}
+    </select>
+
+    <insert id="addPhoto" useGeneratedKeys="true" keyProperty="id" >
+        insert into p_photo (`name`, `desc`, photosId,url,userId,createTime)
+        VALUES (#{name},#{desc},#{photosId}, #{url}, #{userId}, #{createTime})
+    </insert>
+</mapper>
