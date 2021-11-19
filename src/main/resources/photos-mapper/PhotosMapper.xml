@@ -23,16 +23,16 @@
     <update id="createPhotosTableForMysql">
         CREATE TABLE `p_photos`  (
               `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
-              `name` varchar(256) NULL COMMENT '相册名',
-              `desc` varchar(1024) NULL COMMENT '描述',
-              `coverUrl` varchar(128) NULL COMMENT '封面url',
+              `name` varchar(256) NULL DEFAULT NULL COMMENT '相册名',
+              `desc` varchar(1024) NULL DEFAULT NULL COMMENT '描述',
+              `coverUrl` varchar(128) NULL DEFAULT NULL COMMENT '封面url',
               `isEncryption` int(0) NULL DEFAULT 0 COMMENT '是否加密:0正常,1:加密',
-              `password` varchar(64) NULL COMMENT '密码',
+              `password` varchar(64) NULL DEFAULT NULL COMMENT '密码',
               `userId` int(0) NOT NULL COMMENT '用户id',
-              `createTime` datetime NULL COMMENT '创建时间',
-              `updateTime` datetime NULL COMMENT '更新时间',
-              PRIMARY KEY (`id`)
-        )
+              `createTime` datetime NULL DEFAULT NULL COMMENT '创建时间',
+              `updateTime` datetime NULL DEFAULT NULL COMMENT '更新时间',
+              PRIMARY KEY (`id`) USING BTREE
+        )ENGINE = InnoDB CHARACTER SET = utf8mb4 ROW_FORMAT = Dynamic
 
     </update>
 
@@ -43,7 +43,8 @@
     <select id="getList" resultType="com.photos.model.Photos">
         select id,`name`,`desc`,coverUrl,isEncryption,userId,createTime,updateTime from p_photos
         <if test="name != null and name != ''">
-            where `name` like '%'||#{name}||'%'
+            <bind name="name" value="'%' + _parameter.name + '%'" />
+            where `name` like #{name}
         </if>
         order by id desc limit ${page},${size}
     </select>
@@ -51,7 +52,8 @@
     <select id="getTotal" resultType="java.lang.Long">
         select count(1) from p_photos
         <if test="name != null and name != ''">
-            where `name` like '%'||#{name}||'%'
+            <bind name="name" value="'%' + _parameter.name + '%'" />
+            where `name` like #{name}
         </if>
     </select>
 
