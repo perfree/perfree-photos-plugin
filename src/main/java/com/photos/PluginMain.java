@@ -12,7 +12,7 @@ import org.pf4j.PluginWrapper;
  * @date 2021/11/15 9:15
  */
 @AdminGroups(groups = {
-        @AdminGroup(name = "内容管理", groupId = Constants.ADMIN_MENU_GROUP_CONTENT)
+        @AdminGroup(name = "插件管理", groupId = Constants.ADMIN_MENU_GROUP_PLUGIN)
 })
 public class PluginMain extends BasePlugin {
     public PluginMain(PluginWrapper wrapper) {

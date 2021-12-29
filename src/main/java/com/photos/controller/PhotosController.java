@@ -36,7 +36,7 @@ public class PhotosController extends BaseController {
      * @return java.lang.String
      * @author Perfree
      */
-    @AdminMenu(name="相册管理", groupId = com.perfree.commons.Constants.ADMIN_MENU_GROUP_CONTENT, seq = 12)
+    @AdminMenu(name="相册管理", groupId = com.perfree.commons.Constants.ADMIN_MENU_GROUP_PLUGIN, seq = 1)
     @GetMapping("/admin/plugin/photos")
     public String adminPhotos(){
         return "/photos-static/admin/photos/photos-list.html";
