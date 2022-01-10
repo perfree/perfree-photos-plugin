@@ -105,7 +105,7 @@ public class PhotosController extends BaseController {
     public String editPage(@PathVariable("id") String id, Model model) {
         Photos photos = photosService.getById(Long.parseLong(id));
         model.addAttribute("photos", photos);
-        return view("/photos-static/admin/photos/photos-edit.html");
+        return "/photos-static/admin/photos/photos-edit.html";
     }
 
     /**
