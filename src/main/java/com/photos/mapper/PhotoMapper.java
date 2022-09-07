@@ -14,8 +14,6 @@ public interface PhotoMapper {
 
     void createPhotoTableForMysql();
 
-    void dropPhotoTable();
-
     void addPhoto(Photo photo);
 
     List<Photo> getList(@Param("page") int page, @Param("size") int size,

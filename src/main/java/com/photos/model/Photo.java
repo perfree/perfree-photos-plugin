@@ -1,5 +1,8 @@
 package com.photos.model;
 
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -13,8 +16,12 @@ public class Photo implements Serializable {
 
     private Long id;
     private Long photosId;
+    @NotBlank(message = "图片名不允许为空")
+    @Length(max = 100,message = "图片名最多100个字符")
     private String name;
+    @Length(max = 500,message = "描述最多500个字符")
     private String desc;
+    @NotBlank(message = "图片不允许为空")
     private String url;
     private Long userId;
     private Date createTime;

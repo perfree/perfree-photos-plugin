@@ -19,10 +19,8 @@ public class Photos implements Serializable {
     @Length(max = 100,message = "相册名最多100个字符")
     private String name;
 
-    @NotBlank(message = "相册描述不允许为空")
     @Length(max = 500,message = "相册描述最多500个字符")
     private String desc;
-    @NotBlank(message = "相册封面图不允许为空")
     private String coverUrl;
     private Integer isEncryption;
     private String password;

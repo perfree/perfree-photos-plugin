@@ -1,24 +1,17 @@
 package com.photos.service;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.ZipUtil;
 import cn.hutool.crypto.SecureUtil;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.perfree.commons.DynamicDataSource;
 import com.perfree.commons.Pager;
 import com.perfree.directive.DirectivePage;
-import com.perfree.model.Article;
 import com.photos.common.Constants;
 import com.photos.mapper.PhotoMapper;
 import com.photos.mapper.PhotosMapper;
-import com.photos.model.Photo;
 import com.photos.model.Photos;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -30,14 +23,6 @@ public class PhotosService {
 
     @Autowired
     private PhotoMapper photoMapper;
-
-    /**
-     * 删除表
-     */
-    public void dropTable() {
-        photosMapper.dropPhotosTable();
-        photoMapper.dropPhotoTable();
-    }
 
     /**
      * @description 创建表
@@ -76,8 +61,11 @@ public class PhotosService {
      */
     public void addPhotos(Photos photos) {
         photos.setCreateTime(new Date());
-        if (photos.getIsEncryption() == Constants.PHOTOS_ENCRYPTION) {
+        if (StringUtils.isNotBlank(photos.getPassword())) {
+            photos.setIsEncryption(Constants.PHOTOS_ENCRYPTION);
             photos.setPassword(SecureUtil.md5(photos.getPassword()));
+        } else {
+            photos.setIsEncryption(Constants.PHOTOS_ENCRYPTION_OFF);
         }
         photosMapper.addPhotos(photos);
     }
@@ -110,36 +98,13 @@ public class PhotosService {
      */ 
     public int update(Photos photos) {
         photos.setUpdateTime(new Date());
+        if (StringUtils.isNotBlank(photos.getPassword())) {
+            photos.setIsEncryption(Constants.PHOTOS_ENCRYPTION);
+            photos.setPassword(SecureUtil.md5(photos.getPassword()));
+        } else {
+            photos.setIsEncryption(Constants.PHOTOS_ENCRYPTION_OFF);
+        }
         return photosMapper.update(photos);
-    }
-
-    /** 
-     * @description 压缩相册为zip
-     * @param photos 相册
-     * @return java.io.File 
-     * @author Perfree
-     */ 
-    public File getPhotosZip(Photos photos) {
-        File file = new File(Constants.PHOTOS_TMP_PATH);
-        if (!file.exists()) {
-            FileUtil.mkdir(file.getAbsolutePath());
-        }
-        FileUtil.clean(file.getAbsolutePath());
-
-        List<Photo> photoList =  photoMapper.getAllPhotoByPhotosId(photos.getId());
-        List<File> photoFileList = new ArrayList<>();
-        for (Photo photo : photoList) {
-           File photoFile = new File(Constants.PHOTOS_PATH + photo.getUrl());
-           if (photoFile.exists()) {
-               photoFileList.add(photoFile);
-           }
-        }
-        if (photoList.size() > 0) {
-            return ZipUtil.zip(FileUtil.file(file.getAbsolutePath() + File.separator + photos.getName() + ".zip"), false,
-                    photoFileList.toArray(new File[0])
-            );
-        }
-        return null;
     }
 
     public DirectivePage<HashMap<String, String>> frontArticlesPage(DirectivePage<HashMap<String, String>> photosPage) {

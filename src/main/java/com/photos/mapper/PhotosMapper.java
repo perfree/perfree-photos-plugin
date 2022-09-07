@@ -8,7 +8,6 @@ import java.util.List;
 
 @Mapper
 public interface PhotosMapper {
-    void dropPhotosTable();
 
     void createPhotosTableForMysql();
 

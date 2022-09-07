@@ -30,12 +30,6 @@ public class PhotoController extends BaseController {
         return "/photos-static/admin/photo/photo-list.html";
     }
 
-    @RequestMapping("/admin/plugin/photo/addPage/{id}")
-    public String addPage(@PathVariable("id") String id, Model model){
-        model.addAttribute("photosId", id);
-        return "/photos-static/admin/photo/photo-add.html";
-    }
-
     /**
      * 添加图片
      * @return String
@@ -77,15 +71,10 @@ public class PhotoController extends BaseController {
         return ResponseBean.fail("删除失败", null);
     }
 
-    /**
-     * 编辑图片页
-     * @return String
-     */
-    @GetMapping("/admin/plugin/photo/editPage/{id}")
-    public String editPage(@PathVariable("id") String id, Model model) {
-        Photo photo = photoService.getById(Long.parseLong(id));
-        model.addAttribute("photo", photo);
-        return "/photos-static/admin/photo/photo-edit.html";
+    @GetMapping("/admin/plugin/photo/getById")
+    @ResponseBody
+    public ResponseBean getById(String id) {
+        return ResponseBean.success("success", photoService.getById(Long.parseLong(id)));
     }
 
     /**

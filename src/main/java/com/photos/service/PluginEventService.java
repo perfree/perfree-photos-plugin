@@ -27,12 +27,10 @@ public class PluginEventService implements BasePluginEvent {
 
     @Override
     public void onInstall() {
-        photosService.dropTable();
         photosService.createTable();
     }
 
     @Override
     public void onUnInstall() {
-        photosService.dropTable();
     }
 }

@@ -1,0 +1,15 @@
+com\photos\controller\PhotosController.class
+com\photos\mapper\PhotoMapper.class
+com\photos\controller\UploadController.class
+com\photos\controller\FrontController.class
+com\photos\service\PhotoService.class
+com\photos\model\Photo.class
+com\photos\controller\PhotoController.class
+com\photos\common\Constants.class
+com\photos\service\PhotosService.class
+com\photos\service\PluginEventService.class
+com\photos\directive\PhotosPageDirective.class
+com\photos\model\Photos.class
+META-INF\extensions.idx
+com\photos\PluginMain.class
+com\photos\mapper\PhotosMapper.class
